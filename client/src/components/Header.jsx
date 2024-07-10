@@ -1,13 +1,13 @@
-import { Outlet } from "react-router-dom";
+// src/components/Header.jsx
+// import React from "react";
+import { Outlet} from "react-router-dom";
 
 const Header = () => {
-    return (
-        <div>
-            Header
-            <Outlet />
-            Footer
-        </div>
-    );
+  return (
+    <div>
+      <Outlet />
+    </div>
+  );
 };
 
 export default Header;
