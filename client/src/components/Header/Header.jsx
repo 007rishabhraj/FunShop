@@ -12,7 +12,7 @@ const Header = () => {
     <div>
       <header className="bg-white p-4 shadow-md flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center space-x-8">
-          <img src="logo.png" alt="Logo" className="h-12" />
+          <img src="/logo.png" alt="Logo" className="h-12 ml-6"/>
           <div className="space-x-6 pl-20">
             <a href="/" className="text-gray-700 hover:text-blue-500">
               Home
