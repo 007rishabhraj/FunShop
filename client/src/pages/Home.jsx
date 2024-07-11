@@ -1,10 +1,10 @@
 import { FaStar } from 'react-icons/fa';
 import productImage from '/product.webp'; // Replace with actual product image path
-
+import Caraousel from '../components/Caraousel/Caraousel';
 const Home = () => {
   return (
     <div className="font-sans antialiased pt-10">
-      {/* Hero Section */}
+      <Caraousel />
       <section className="bg-gray-800 text-white py-16">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-8 md:mb-0">
