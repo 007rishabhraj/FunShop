@@ -1,4 +1,10 @@
-
+import APIFeatures from "../utils/ApiFeatures";
+const features = new APIFeatures(Tour.find(), req.query)
+  .filter()
+  .sort()
+  .limitField()
+  .paginate();
+const data = await features.query;
 
 const createProduct = async (req, res) => {
     

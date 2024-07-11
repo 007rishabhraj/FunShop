@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema(
    {
     name: {
       type: String,
-      required: [true, 'A product must have a name'],
+      // required: [true, 'A product must have a name'],
       unique: true,
       trim: true,
       maxlength: [40, 'A product name must have less or equal then 40 characters'],
@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema(
     },
     price: {
       type: Number,
-      required: [true, 'A Product must have a price']
+      // required: [true, 'A Product must have a price']
     },
     description: {
       type: String,
