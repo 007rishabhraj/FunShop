@@ -1,5 +1,3 @@
-// Footer.jsx
-import React from "react";
 import {
   FaFacebookF,
   FaTwitter,

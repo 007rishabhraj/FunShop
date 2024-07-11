@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaCreditCard, FaShippingFast } from 'react-icons/fa';
 
 const Checkout = () => {

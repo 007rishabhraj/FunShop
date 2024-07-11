@@ -1,5 +1,3 @@
-// HomePage.jsx
-import React from 'react';
 import { FaStar } from 'react-icons/fa';
 import productImage from '/product.webp'; // Replace with actual product image path
 
