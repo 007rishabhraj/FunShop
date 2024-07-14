@@ -24,6 +24,13 @@ const userSchema = new mongoose.Schema({
     // required: [true, "Please provide a password"],
     minlength: [8, "Your password must contain 8 characters"],
   },
+  cart:{
+    type:[{
+      product: mongoose.Schema.ObjectId,
+      quantity:Number,
+    }],
+    default:[]
+  }
 });
 
 userSchema.pre('save', async function(next) {

@@ -59,7 +59,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// Function to update a product by ID
+// Function to update a product by ID  /
 const updateProduct = async (req, res) => {
   try {
     const { name, description, price } = req.body;
@@ -67,7 +67,7 @@ const updateProduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ msg: "Product not found" });
     }
-
+    
     // Update product fields if provided in request body
     if (name) product.name = name;
     if (description) product.description = description;

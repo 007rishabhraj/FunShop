@@ -5,11 +5,11 @@ export const userRouter = express.Router();
 
 userRouter
   .route("/")
-  // .all(verifyUser)
+  .all(verifyUser)
   .get(userController.getUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
   userRouter.route("/login").post(userController.login);
   userRouter.route("/signup").post(userController.signup);
-  userRouter.route('/users').get(userController.getAllUsers)
+  // userRouter.route('/users').get(userController.getAllUsers)
