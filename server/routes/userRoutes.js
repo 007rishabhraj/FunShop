@@ -1,14 +1,15 @@
 import express from "express";
-import verifyUser from "../middleware/verifyUser";
-import userController from "../controller/userController";
-const router = express.Router();
+import verifyUser from "../middleware/verifyUser.js";
+import userController from "../controller/userController.js";
+export const userRouter = express.Router();
 
-router
+userRouter
   .route("/")
-  .all(verifyUser)
+  // .all(verifyUser)
   .get(userController.getUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
-router.route("/login").post(userController.login);
-router.route("/signup").post(userController.signup);
+  userRouter.route("/login").post(userController.login);
+  userRouter.route("/signup").post(userController.signup);
+  userRouter.route('/users').get(userController.getAllUsers)

@@ -1,7 +1,7 @@
 import JWT from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import User from "../models/userModel";
-
+import User from "../models/userModel.js";
+import sendToken from "../utils/sendToken.js";
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -42,6 +42,8 @@ const login = async (req, res) => {
 };
 
 const signup = async (req, res) => {
+  console.log(req.body);
+
   const { email, password } = req.body;
 
   try {
@@ -72,12 +74,13 @@ const signup = async (req, res) => {
     });
 
     // Respond with success message and token
-    res.status(201).json({
-      message: "User registered successfully",
-      token,
-    });
+    // res.status(201).json({
+    //   message: "User registered successfully",
+    //   token,
+    // });
+    sendToken(user,200,token,res);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).send("Server Error"); // Handle server error
   }
 };
@@ -139,7 +142,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     // Find user by ID and delete from database
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.body);
 
     // Check if user exists
     if (!user) {
@@ -161,4 +164,14 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export default { login, signup, getUser, updateUser, deleteUser };
+const getAllUsers = async(req, res) => {
+  const users = await User.find()
+  if(users){
+    res.status(200).json({
+      success: 'true',
+      body: users
+    })
+  }
+}
+
+export default { login, signup, getUser, updateUser, deleteUser, getAllUsers };
