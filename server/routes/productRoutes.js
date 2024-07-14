@@ -1,14 +1,14 @@
 import express from "express";
-import productController from "../controller/productController";
-import verifyUser from "../middleware/verifyUser";
+import productController from "../controller/productController.js";
+import verifyUser from "../middleware/verifyUser.js";
 
-const router = express.Router();
+export const productRouter = express.Router();
 
-router
+productRouter
   .route("/")
   .get(productController.getAllProduct)
   .post(verifyUser, productController.createProduct);
-router
+productRouter
   .route("/:id")
   .get(productController.getProduct)
   .patch(verifyUser, productController.updateProduct)

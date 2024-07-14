@@ -1,5 +1,5 @@
-import Product from "../models/Product"; // Import your Product model
-import APIFeatures from "../utils/APIFeatures"; // Import your APIFeatures class
+import Product from "../models/productModel.js"; // Import your Product model
+import APIFeatures from "../utils/apiFeatures.js"; // Import your APIFeatures class
 
 // Function to create a new product
 const createProduct = async (req, res) => {
