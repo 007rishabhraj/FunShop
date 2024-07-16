@@ -4,6 +4,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 import 'tailwindcss/tailwind.css';
 import { useState, useRef, useEffect } from 'react';
 import DropDown from '../DropDown';
+import { useAuth } from '../../store/Auth';
 
 const Header = () => {
   const location = useLocation();
@@ -52,19 +53,22 @@ const Header = () => {
   //     <Outlet />
   //   </div>
   // );
+  const {user} = useAuth()
   const [isOpen, setIsOpen] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
-  let iconRef = useRef();
+  let menuRef = useRef();
 
   useEffect(() => {
-    const closeDropdown = (e) => {
-      if (!iconRef.current.contains(e.target)) {
+    let closeDropdown = (e) => {
+      if (!menuRef.current.contains(e.target)) {
         setShowDropDown(false);
       }
     };
-    document.body.addEventListener('mousedown', closeDropdown);
+    document.addEventListener('mousedown', closeDropdown);
 
-    return () => document.body.removeEventListener('mousedown', closeDropdown);
+    return () => {
+      document.removeEventListener('mousedown', closeDropdown);
+    };
   });
   return (
     <nav className="bg-white shadow-lg">
@@ -99,15 +103,15 @@ const Header = () => {
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             <FaShoppingCart className="text-3xl ml-4 cursor-pointer text-gray-800" />
             <div className="relative -top-4 right-1 bg-gray-800 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
-              3
+              {user ? user.cart.length : 0}
             </div>
-            <div ref={iconRef}>
+            <div ref={menuRef}>
               <FaUserCircle
                 className="text-3xl ml-4 cursor-pointer text-gray-800"
                 onClick={() => setShowDropDown((prev) => !prev)}
               />
+              {showDropDown && <DropDown />}
             </div>
-            {showDropDown && <DropDown />}
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button
