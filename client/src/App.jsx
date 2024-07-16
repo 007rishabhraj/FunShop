@@ -4,7 +4,7 @@ import routes from '.';
 import AuthProvider from './store/AuthProvider';
 import './index.css';
 import Footer from './components/Footer/Footer';
-
+import axios from 'axios';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -21,6 +21,11 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+export const axiosInstance = axios.create({
+  baseURL: 'http://localhost:3000',
+});
+axiosInstance.defaults.withCredentials = true;
 
 const App = () => {
   return (

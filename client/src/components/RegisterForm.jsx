@@ -1,25 +1,75 @@
-import { useState } from "react";
-import { HiEye, HiEyeOff } from "react-icons/hi"; // Importing icons from React Icons library
-
+import { useState } from 'react';
+import { HiEye, HiEyeOff } from 'react-icons/hi'; // Importing icons from React Icons library
+import { axiosInstance } from '../App';
+import { useAuth } from '../store/Auth';
+import { useNavigate } from 'react-router-dom';
 const RegisterForm = () => {
-  const[input,setInput] = useState({
-    name:'',
-    email:'',
-    password:'',
-    confirmPassword:''
-  })
+  const {setUser}  = useAuth()
+  const navigate = useNavigate()
+  const [input, setInput] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [inputError, setInputError] = useState({
+    password: null,
+    confirmPassword: null,
+  });
 
-  const changeHandler = (event)=>{
-    setInput({...input,[event.name]:event.target.value})
-  }
-  const handleSubmit = () => {
-    
+  const changeHandler = (event) => {
+    const { name, value } = event.target;
+    setInput({ ...input, [name]: value });
+
+    if (name === 'password' && value.length <= 4) {
+      setInputError((prevErrors) => ({
+        ...prevErrors,
+        password: 'Password must be more than 4 characters',
+      }));
+    } else {
+      setInputError((prevErrors) => ({
+        ...prevErrors,
+        password: null,
+      }));
+    }
+
+    if (name === 'confirmPassword' && value !== input.password) {
+      setInputError((prevErrors) => ({
+        ...prevErrors,
+        confirmPassword: 'Passwords do not match',
+      }));
+    } else {
+      setInputError((prevErrors) => ({
+        ...prevErrors,
+        confirmPassword: null,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const body = input;
+    try {
+      const response = await axiosInstance.post(
+        '/user/signup',
+        body,
+      );
+      console.log(response);
+      setUser(response.data.user)
+      navigate('/')
+    } catch (error) {
+      console.log(error.response.data);
+    }
   };
 
   // Function to toggle password visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -37,8 +87,8 @@ const RegisterForm = () => {
             type="text"
             name="name"
             value={input.name}
-            onClick={changeHandler}
             required
+            onChange={changeHandler}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
@@ -53,6 +103,7 @@ const RegisterForm = () => {
             type="email"
             name="email"
             required
+            onChange={changeHandler}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
@@ -68,6 +119,7 @@ const RegisterForm = () => {
               type={showPassword ? 'text' : 'password'}
               name="password"
               required
+              onChange={changeHandler}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10"
             />
             <button
@@ -82,6 +134,11 @@ const RegisterForm = () => {
               )}
             </button>
           </div>
+          {inputError.password && (
+            <div className="text-xs text-red-800 absolute">
+              {inputError.password}
+            </div>
+          )}
         </div>
         <div>
           <label
@@ -92,22 +149,28 @@ const RegisterForm = () => {
           </label>
           <div className="relative">
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showConfirmPassword ? 'text' : 'password'}
               name="confirmPassword"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10"
+              onChange={changeHandler}
             />
             <button
               type="button"
-              onClick={togglePasswordVisibility}
+              onClick={toggleConfirmPasswordVisibility}
               className="absolute inset-y-0 right-0 px-3 py-2 bg-transparent flex items-center"
             >
-              {showPassword ? (
+              {showConfirmPassword ? (
                 <HiEyeOff className="h-4 w-4 text-gray-500" />
               ) : (
                 <HiEye className="h-4 w-4 text-gray-500" />
               )}
             </button>
           </div>
+          {inputError.confirmPassword && (
+            <div className="text-xs text-red-800 absolute">
+              {inputError.confirmPassword}
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-between">
           <button
