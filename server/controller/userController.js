@@ -8,7 +8,7 @@ const login = async (req, res) => {
   try {
     // Find user by email
     const user = await User.findOne({ email });
-
+    
     // Check if user exists
     if (!user) {
       return res.status(400).json({

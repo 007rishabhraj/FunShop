@@ -9,7 +9,7 @@ import { productRouter } from './routes/productRoutes.js'
 
 app.use(express.json())
 app.use('/user',userRouter)
-app.use('/product',productRouter)
+app.use('/products',productRouter)
 app.use(helmet())
 app.use(cors())
 app.use(cookieParser())
