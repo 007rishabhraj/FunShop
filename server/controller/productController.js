@@ -1,9 +1,9 @@
 import Product from "../models/productModel.js"; 
 import APIFeatures from "../utils/apiFeatures.js"; 
 
-
 const createProduct = async (req, res) => {
  try{
+    //  implement algolia 
     const newProduct = await Product.create(req.body);
     res.status(201).json({
       status:"success",
@@ -13,7 +13,7 @@ const createProduct = async (req, res) => {
     })
  }catch(err){
       console.error(err.message);
-      res.status(500).send("Server Error"); 
+      res.status(500).send("Server Error");
  }
 };
 
@@ -66,6 +66,7 @@ const deleteProduct = async (req, res) => {
     if (!product) {
       return res.status(400).json({ message: "Product not found" });
     }
+    await Product.findByIdAndDelete(req.params.id);
     res.status(204).json({
       status:'Success',
       data:null

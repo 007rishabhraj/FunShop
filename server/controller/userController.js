@@ -9,6 +9,7 @@ const login = async (req, res) => {
     try {
         // Find user by email
         const user = await User.findOne({ email });
+        console.log("hm hi hai user")
         console.log(user);
         // Check if user exists
         if (!user) {
@@ -19,8 +20,8 @@ const login = async (req, res) => {
 
         // Validate password
         console.log("ye kya ho gya hai");
-        console.log(password);
-        console.log(user.password);
+        console.log(typeof password);
+        console.log(typeof user.password);
         const isValid = await bcrypt.compareSync(password, user.password);
         if (!isValid) {
             return res.status(400).json({
@@ -35,47 +36,11 @@ const login = async (req, res) => {
         });
         sendToken(user, 200, token, res);
     } catch (err) {
-        console.error(err.message);
+        console.error(err);
         res.status(500).send("Server Error"); // Handle server error
     }
 };
 
-// const login = async (req, res) => {
-//     // console.log(req.body);
-//     const { email, password } = req.body;
-//     try {
-//         // Find user by email
-//         const user = await User.findOne({ email });
-//         console.log(user);
-//         // Check if user exists
-//         if (!user) {
-//             return res.status(404).json({
-//                 message: "User does not exist! Please register",
-//             });
-//         }
-
-//         // Validate password
-//         console.log("ye kya ho gya hai");
-//         console.log(password);
-//         console.log(user.password);
-//         const isValid = await bcrypt.compare(password, user.password); // Await the bcrypt.compare call
-//         if (!isValid) {
-//             return res.status(400).json({
-//                 status: "Error",
-//                 message: "Password does not match",
-//             });
-//         }
-
-//         // Generate JWT token
-//         const token = JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
-//             expiresIn: "30d",
-//         });
-//         sendToken(user, 200, token, res);
-//     } catch (err) {
-//         console.error(err.message);
-//         res.status(500).send("Server Error"); // Handle server error
-//     }
-// };
 
 const signup = async (req, res) => {
     console.log(req.body);

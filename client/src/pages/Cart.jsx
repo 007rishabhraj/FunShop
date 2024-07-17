@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { FaTrash, FaUndo } from 'react-icons/fa';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const Cart = () => {
   // Sample cart items (in a real app, this would come from state or context)
   const [cartItems, setCartItems] = useState([
