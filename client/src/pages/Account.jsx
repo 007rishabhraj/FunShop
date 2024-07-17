@@ -1,6 +1,7 @@
 import  { useState } from 'react';
 import { FaEdit, FaEnvelope, FaPhone, FaUser } from 'react-icons/fa';
 import EditProfile from '../components/EditProfile';
+import { axiosInstance } from '../App';
 const Account = () => {
   const [editMode, setEditMode] = useState(false); // State to manage edit mode
 
@@ -24,9 +25,19 @@ const Account = () => {
     // Ideally, you would make an API call here to update the profile on the server
     setEditMode(false); // Exit edit mode after submission
   };
-
+  const onClick = async(req, res) => {
+    try {
+      const response = await axiosInstance.delete('/user');
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
   return (
+    
     <div className="font-sans antialiased bg-gray-100 min-h-screen py-8">
+      <button onClick={onClick} className='border-2 rounded-2xl bg-slate-600 p-3 text-xl text-white'>delete my account</button>
       <div className="container mx-auto px-4">
         {/* Profile Header */}
         <div className="bg-white shadow-md rounded-lg p-6 mb-8">
