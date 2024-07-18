@@ -21,7 +21,7 @@ const verifyUser = async (req,res,next)=>{
             message:'You are not logged in'
         })
     }
-    user.password= null;
+    // user.password= null;
     req.body.user = user;
     next();
 }

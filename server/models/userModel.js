@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
 import validator from 'validator'
 
 const userSchema = new mongoose.Schema({
@@ -33,19 +32,22 @@ const userSchema = new mongoose.Schema({
       quantity:Number,
     }],
     default:[]
+  },
+  orders:{
+    type:[{
+      product:{
+        type:[mongoose.Schema.ObjectId],
+        ref:"Product"
+      },
+      order:{
+        type:mongoose.Schema.ObjectId,
+        ref:"Order"
+      }
+    }],
+    default:[]
   }
 });
 
-// userSchema.pre('save', async function(next) {
-//   // Only run this function if password was actually modified
-//   if (!this.isModified('password')) return next();
-
-
-//   const salt = await bcrypt.genSalt();
-//   this.password = await bcrypt.hash(this.password, salt);
-
-//     next();
-// });
 
 const User = mongoose.model('User', userSchema);
 

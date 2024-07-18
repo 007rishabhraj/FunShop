@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import { userRouter } from './routes/userRoutes.js'
 import { productRouter } from './routes/productRoutes.js'
 import { cartRouter } from './routes/cartRoutes.js'
+import { orderRouter } from './routes/orderRoutes.js'
 
 const corsOption = {
     origin: ['http://localhost:5173'],
@@ -21,5 +22,6 @@ app.use(helmet())
 app.use('/user',userRouter)
 app.use('/product',productRouter)
 app.use('/cart',cartRouter)
+app.use('/orders',orderRouter)
 
 

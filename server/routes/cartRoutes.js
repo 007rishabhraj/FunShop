@@ -9,4 +9,4 @@ cartRouter
   .all(verifyUser)
   .get(cartController.getAllCart)
   .post(cartController.createCart)
-  .delete(cartController.removeFromCart);
+  .delete(cartController.removeCart);
