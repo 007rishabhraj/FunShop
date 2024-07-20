@@ -18,11 +18,12 @@ const productSchema = new mongoose.Schema(
       max: [5, 'Rating must be below 5.0']
     },
     ratingsQuantity: {
-      type: [{
-        rating : Number,
-        message: String
-      }],
-      default: []
+      // type: [{
+      //   rating : Number,
+      //   message: String
+      // }],
+      // default: []
+      type:Number
     },
     price: {
       type: Number,
