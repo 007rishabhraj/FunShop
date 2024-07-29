@@ -1,19 +1,4 @@
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../store/Auth';
-
-
-const LogOutModal = ({ showLogInModal, onConfirm, onClose }) => {
-  console.log('login modal');
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const onClick = async () => {
-    if (!user) navigate('/login', { state: { from: location, productId } });
-    else {
-      const res = await axiosInstance.post('/');
-    }
-  };
+const LogInModal = ({ onConfirm, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-20">
       <div className="bg-white rounded-lg shadow-lg p-6 w-96">
@@ -38,4 +23,4 @@ const LogOutModal = ({ showLogInModal, onConfirm, onClose }) => {
   );
 };
 
-export default LogOutModal;
+export default LogInModal;

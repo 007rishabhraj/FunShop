@@ -21,14 +21,11 @@ const Search = () => {
   }, []);
 
   return (
-    <div className="flex w-full ">
-      <div className="bg-red-600 w-[20%]">asdf</div>
-      <div
-        className=" w-[80%]"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        <ProductCard products={products} />
+    <div className="flex  w-full ">
+      <div className="w-72 hidden md:block border-r-4 border-gray-900 ">
+        filters
       </div>
+      <ProductCard products={products} />
     </div>
   );
 };
