@@ -21,7 +21,9 @@ const productSchema = new mongoose.Schema(
       //   message: String
       // }],
       // default: []
+
       type: Number
+
     },
     price: {
       type: Number,

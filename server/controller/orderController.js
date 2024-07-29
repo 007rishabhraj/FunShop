@@ -62,4 +62,32 @@ const getUserOrders = async (req,res)=>{
     }
 }
 
-export default {createOrder,getUserOrders};
+const cancelOrder = async (req, res) => {
+  const orderId  = req.body;
+
+  try {
+    const user = req.body.user
+
+    const orderIndex = user.orders.findIndex(order => order.order.toString() === orderId);
+    if (orderIndex === -1) {
+      return res.status(404).json({
+        status: 'Fail',
+        message: 'Order not found in user\'s orders'
+      });
+    }
+
+    user.orders.splice(orderIndex, 1);
+    await user.save();
+    await Order.findByIdAndDelete(orderId);
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'Order canceled successfully'
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+export default {createOrder,getUserOrders,cancelOrder};

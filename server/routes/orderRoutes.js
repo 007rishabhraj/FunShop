@@ -8,4 +8,5 @@ orderRouter
   .route("/")
   .all(verifyUser)
   .post(orderController.createOrder)
-  .get(orderController.getUserOrders);
+  .get(orderController.getUserOrders)
+  .delete(orderController.cancelOrder);
