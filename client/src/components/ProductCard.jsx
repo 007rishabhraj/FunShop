@@ -1,104 +1,79 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PiCurrencyInrBold } from 'react-icons/pi';
 import _ from 'lodash';
 import { useAuth } from '../store/Auth';
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-  Pagination,
-  Button,
-} from '@nextui-org/react';
+import { Pagination, Button } from '@nextui-org/react';
 import LogInModal from './LogInModal';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../App';
 
 const ProductCard = ({ products }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showLogInModal, setShowLogInModal] = useState(false);
   const { user, setUser } = useAuth();
+
   const handleAddToCartClick = async (productId) => {
     if (!user) {
-      console.log('nhi hora hai');
       setShowLogInModal(true);
     } else {
-      console.log(productId);
       const body = {
         productId: productId,
         quantity: 1,
       };
       const res = await axiosInstance.post('/cart', body);
       setUser(res.data.user);
-      console.log(res.data.user);
     }
   };
 
-  const onClick = async () => {
-    if (!user) navigate('/login', { state: { from: location, productId } });
-    else {
-      const res = await axiosInstance.post('/');
-    }
-  };
-  const logOutHandler = () => {
-    setShowLogInModal(!showLogInModal);
-  };
   const onClose = () => {
     setShowLogInModal(!showLogInModal);
   };
   const handleLogIn = async () => {
-    navigate('/login', { state: { from: location} });
+    navigate('/login', { state: { from: location.pathname } });
   };
 
   if (!products) {
     return <img src="./notFound.png" alt="" />;
   }
-  // const addToCart = () => {
-  //   if (!user) {
-  //     console.log(user);
-  //     setShowModal(true);
-  //   }
-  // };
-
-  // const location = useLocation();
-  // const productId = location.state?.productId;
-  // console.log(productId);
-  // useEffect(() => {
-  //   if (productId) {
-  //     addToCart(productId);
-  //   }
-  // }, [productId]);
   const numberWithCommas = (number) => {
     const formattedNumber = _.toNumber(number).toLocaleString();
     return formattedNumber;
   };
   return (
-    <div className="flex flex-col relative h-full bg-slate-700">
+    <div className="flex flex-col items-center h-full p-2 w-full  ">
       {products.map((item, index) => (
-        <div key={index} className="m-2 h-[12rem] flex px-10">
-          <img src={item.images[0]} className=" w-[25%]" />
-          <div className="flex flex-col px-5 justify-center">
-            <div className="truncate">
-              {item.name} asd as da sd asdasd a sd asd
+        <div
+          key={index}
+          className="flex sm:flex-row flex-col w-full justify-center items-center border-2 m-2 rounded-lg hover:bg-gray-200 gap-10 px-10 py-4"
+        >
+          <img
+            onClick={() => navigate('/product/' + item._id)}
+            src={item.images[0]}
+            className="w-56 md:w-56 cursor-pointer"
+          />
+          <div className="flex w-full lg:flex-row flex-col md:px-10 justify-center gap-4 lg:justify-between items-center sm:items-start lg:items-center">
+            <div>
+              <div
+                className="truncate text-2xl font-bold cursor-pointer hover:text-red-500  "
+                onClick={() => navigate('/product/' + item._id)}
+              >
+                {item.name}
+              </div>
+              <div className="flex items-center space-x-2 ">
+                <PiCurrencyInrBold className="text-xl text-gray-800" />
+                <span className="text-2xl font-bold">
+                  {numberWithCommas(item.price)}/-
+                </span>
+              </div>
+
+              <div>FREE Delivery</div>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-xl font-semibold text-red-600">{`-${23}%`}</span>
-              <PiCurrencyInrBold className="text-xl text-gray-800" />
-              <span className="text-2xl font-bold">
-                {numberWithCommas(98656)}/-
-              </span>
-            </div>
-            <div className="flex items-center text-lg text-gray-500">
-              <PiCurrencyInrBold className="text-xl text-gray-800" />
-              {`M.R.P ${numberWithCommas(123564)}`}
-            </div>
-            <div>FREE Delivery</div>
+
             <div className="flex flex-wrap gap-4 items-center">
               <Button
                 color="primary"
-                variant="shadow"
+                variant="solid"
                 onClick={() => handleAddToCartClick(item._id)}
               >
                 Add To Cart

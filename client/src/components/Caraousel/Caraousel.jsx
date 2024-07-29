@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { RxDotFilled } from 'react-icons/rx';
 
-const caraousel = () => {
-  const images = ['https://imgs.search.brave.com/1hJL_9v10RIIkFtSRTdM_5CpGtFBkXpJme6qv1Jc4co/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ3/MjMzNTQ3Ni9waG90/by9kaWdpdGFsbHkt/Z2VuZXJhdGVkLWlt/YWdlLW9mLWlzb21l/dHJpYy1kYXRhLWNo/YXJ0LmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1RTmtnZlZn/WUNYUTdsbzg0TWdt/Y0NtTVAwb1Fsdl9t/V252aWFPc1ktNEQw/PQ',
+const Caraousel = () => {
+  const images = [
+    'https://imgs.search.brave.com/1hJL_9v10RIIkFtSRTdM_5CpGtFBkXpJme6qv1Jc4co/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ3/MjMzNTQ3Ni9waG90/by9kaWdpdGFsbHkt/Z2VuZXJhdGVkLWlt/YWdlLW9mLWlzb21l/dHJpYy1kYXRhLWNo/YXJ0LmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1RTmtnZlZn/WUNYUTdsbzg0TWdt/Y0NtTVAwb1Fsdl9t/V252aWFPc1ktNEQw/PQ',
     'https://imgs.search.brave.com/l3BDxLLjFGt67IttFIb8wMj8j06oLpmZADINBUL_4Bg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9idXJz/dC5zaG9waWZ5Y2Ru/LmNvbS9waG90b3Mv/bGVuc2JhbGwteWVs/bG93LWFuZC1vcmFu/Z2UtbGlnaHRzLmpw/Zz93aWR0aD0xMDAw/JmZvcm1hdD1wanBn/JmV4aWY9MCZpcHRj/PTA',
     'https://imgs.search.brave.com/4T1tXMwOsde3rGFLxrzSkXTjG3_oUCqg7bpedgy7R4E/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9idXJz/dC5zaG9waWZ5Y2Ru/LmNvbS9waG90b3Mv/bWlsa3NoYWtlLW9u/LXBpbmsuanBnP3dp/ZHRoPTEwMDAmZm9y/bWF0PXBqcGcmZXhp/Zj0wJmlwdGM9MA',
-    'https://media.gettyimages.com/id/155378722/photo/toronto-city-skyline-at-night-in-canada.jpg?s=612x612&w=0&k=20&c=TsLZgY9bRwp08Z7ae5u-AMIxZy6GT9DCucirVP5XWS8='
+    'https://media.gettyimages.com/id/155378722/photo/toronto-city-skyline-at-night-in-canada.jpg?s=612x612&w=0&k=20&c=TsLZgY9bRwp08Z7ae5u-AMIxZy6GT9DCucirVP5XWS8=',
   ];
   const [currIndex, setCurrIndex] = useState(0);
   const prevSlide = () => {
@@ -41,7 +42,7 @@ const caraousel = () => {
         <div className="flex top-4 justify-center py-2">
           {images.map((slide, index) => (
             <div key={index} className="text-2xl cursor-pointer">
-              <RxDotFilled onClick={()=>goToSlide(index)}/>
+              <RxDotFilled onClick={() => goToSlide(index)} />
             </div>
           ))}
         </div>
@@ -50,4 +51,4 @@ const caraousel = () => {
   );
 };
 
-export default caraousel;
+export default Caraousel;
