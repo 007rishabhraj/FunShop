@@ -2,7 +2,9 @@ import  { useState } from 'react';
 import { FaEdit, FaEnvelope, FaPhone, FaUser } from 'react-icons/fa';
 import EditProfile from '../components/EditProfile';
 import { axiosInstance } from '../App';
+import { useAuth } from '../store/Auth';
 const Account = () => {
+  const {setUser} = useAuth()
   const [editMode, setEditMode] = useState(false); // State to manage edit mode
 
   // Placeholder user profile data
@@ -29,6 +31,7 @@ const Account = () => {
     try {
       const response = await axiosInstance.delete('/user');
       console.log(response.data);
+      setUser(null)
     } catch (error) {
       console.log(error);
     }

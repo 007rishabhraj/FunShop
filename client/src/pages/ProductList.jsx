@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ProductListShow from './components/ProductList';
+import ProductCard from './components/ProductCard';
 import FilterSortBar from './components/FilterSortBar';
 
 const ProductList = () => {
@@ -39,7 +39,21 @@ const ProductList = () => {
   return (
     <div className="container mx-auto p-4">
       <FilterSortBar onSort={handleSort} onFilter={handleFilter} />
-      <ProductListShow products={products} />
+      {/* <ProductListShow products={products} /> */}
+      <div className="flex flex-wrap justify-center items-center bg-gray-100 min-h-screen">
+      {products.map((item, index) => {
+        console.log(item);
+        return (
+          <ProductCard
+            key={index}
+            image={item.images[0]}
+            title={item.title}
+            price={item.price}
+            rating={item.rating}
+          />
+        );
+      })}
+    </div>
     </div>
   );
 };
