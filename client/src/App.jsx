@@ -5,6 +5,7 @@ import AuthProvider from './store/AuthProvider';
 import './index.css';
 import Footer from './components/Footer/Footer';
 import axios from 'axios';
+import { NextUIProvider } from '@nextui-org/react';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
       { path: 'login', element: <routes.Login /> },
       { path: 'signup', element: <routes.Register /> },
       { path: 'cart', element: <routes.Cart /> },
-      { path: 'checkout', element: <routes.Checkout/> },
+      { path: 'checkout', element: <routes.Checkout /> },
       { path: 'search', element: <routes.Search /> },
       { path: 'account', element: <routes.Account /> },
       { path: 'product/:productId', element: <routes.Product /> },
@@ -29,10 +30,14 @@ axiosInstance.defaults.withCredentials = true;
 
 const App = () => {
   return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-      <Footer />
-    </AuthProvider>
+    <NextUIProvider>
+      <AuthProvider>
+        <div className="min-h-screen flex flex-col m-0 p-0 ">
+          <RouterProvider router={router} />
+          <Footer />
+        </div>
+      </AuthProvider>
+    </NextUIProvider>
   );
 };
 

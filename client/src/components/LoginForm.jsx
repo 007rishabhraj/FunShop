@@ -3,13 +3,16 @@ import { HiEye, HiEyeOff } from 'react-icons/hi';
 import { axiosInstance } from '../App';
 import { useAuth } from '../store/Auth';
 import { IoWarning } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 const LoginForm = () => {
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
-  const {user,setUser} = useAuth()
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+  // const productId = location.state?.productId;
+  const {user,setUser} = useAuth()
   const [input, setInput] = useState({ email: '', password: '' });
   const [error,setError] = useState(null)
   const handleSubmit = async (event) => {
@@ -20,7 +23,7 @@ const LoginForm = () => {
       const response = await axiosInstance.post('/user/login', input);
       console.log(response.data);
       setUser(response.data.user)
-      navigate('/')
+      navigate(from, { state: { productId } });
       // console.log(user); 
     } catch (error) {
       console.log(error);

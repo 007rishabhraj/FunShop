@@ -1,14 +1,12 @@
 import mongoose from "mongoose";
-
-
 const productSchema = new mongoose.Schema(
    {
     name: {
       type: String,
       // required: [true, 'A product must have a name'],
-      unique: true,
+      // unique: true,
       trim: true,
-      maxlength: [40, 'A product name must have less or equal then 40 characters'],
+      maxlength: [400, 'A product name must have less or equal then 40 characters'],
     },
     slug: String,
     ratingsAverage: {
@@ -18,11 +16,12 @@ const productSchema = new mongoose.Schema(
       max: [5, 'Rating must be below 5.0']
     },
     ratingsQuantity: {
-      type: [{
-        rating : Number,
-        message: String
-      }],
-      default: []
+      // type: [{
+      //   rating : Number,
+      //   message: String
+      // }],
+      // default: []
+      type: Number
     },
     price: {
       type: Number,
@@ -32,7 +31,9 @@ const productSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    images: String,
+    images:{
+      type: [String]
+    }
   }
 )
 

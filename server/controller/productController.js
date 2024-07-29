@@ -1,3 +1,4 @@
+import { cache } from "../middleware/checkCache.js";
 import Product from "../models/productModel.js"; 
 import APIFeatures from "../utils/apiFeatures.js"; 
 
@@ -27,6 +28,14 @@ const getAllProduct = async (req, res) => {
       .paginate();
 
     const products = await features.query; // Execute the query
+    const cachedData = {
+      status: "success",
+      results: products.length,
+      data: {
+        products,
+      }
+    }
+    cache.set("products",cachedData);
     res.status(200).json({
       status: "success",
       results: products.length,
