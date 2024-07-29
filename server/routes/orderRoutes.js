@@ -10,3 +10,5 @@ orderRouter
   .post(orderController.createOrder)
   .get(orderController.getUserOrders)
   .delete(orderController.cancelOrder);
+
+orderRouter.route("/:orderId").get(verifyUser, orderController.getOrder);
