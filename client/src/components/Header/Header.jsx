@@ -33,7 +33,7 @@ const Header = () => {
     return (
         <>
             <nav className="bg-white shadow-lg">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
@@ -46,43 +46,56 @@ const Header = () => {
                             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                                 <a
                                     href="/"
-                                    className="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium"
+                                    className="text-gray-900 inline-flex items-center px-1 pt-1 text-md font-medium"
                                 >
-                                    Home
+                                    <span className=" text-gray-900 hover:border-b-2">
+                                        Home
+                                    </span>
                                 </a>
                                 <a
                                     href="/search"
-                                    className="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium"
+                                    className="text-gray-900 inline-flex items-center px-1 pt-1  text-md font-medium"
                                 >
-                                    Products
+                                    <span className=" text-gray-900 hover:border-b-2">
+                                        Products
+                                    </span>
                                 </a>
                             </div>
                         </div>
-                        <div className="my-auto">
-                            <input
-                                type="text"
-                                placeholder="Search FunShop..."
-                                className="w-[40vw] sm:w-[30vw] px-4 py-2 border border-gray-300 rounded-md"
-                            />
-                        </div>
-                        <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                            <FaShoppingCart
-                                onClick={() => redirect('/cart')}
-                                className="text-3xl ml-4 cursor-pointer text-gray-800"
-                            />
-                            <div className="relative -top-4 right-1 bg-gray-800 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
-                                {user ? user.cart.length : 0}
-                            </div>
-                            <div ref={menuRef}>
-                                <FaUserCircle
-                                    className="text-3xl ml-4 cursor-pointer text-gray-800"
-                                    onClick={() =>
-                                        setShowDropDown((prev) => !prev)
-                                    }
+                        {!hideSearchBar && (
+                            <div className="my-auto">
+                                <input
+                                    type="text"
+                                    placeholder="Search FunShop..."
+                                    className="w-[40vw] sm:w-[30vw] px-4 py-2 border border-gray-300 rounded-md"
                                 />
-                                {showDropDown && <DropDown />}
+                            </div>
+                        )}
+                        <div className="flex ">
+                            {!hideCart && (
+                                <div className="hidden sm:flex sm:items-center justify-center justify-between">
+                                    <FaShoppingCart
+                                        onClick={() => redirect('/cart')}
+                                        className="text-3xl ml-4 cursor-pointer text-gray-800"
+                                    />
+                                    <div className="relative -top-4 right-1 bg-gray-800 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                                        {user ? user.cart.length : 0}
+                                    </div>
+                                </div>
+                            )}
+                            <div className="hidden sm:ml-4 sm:flex sm:items-center">
+                                <div ref={menuRef}>
+                                    <FaUserCircle
+                                        className="text-3xl ml-4 cursor-pointer text-gray-800"
+                                        onClick={() =>
+                                            setShowDropDown((prev) => !prev)
+                                        }
+                                    />
+                                    {showDropDown && <DropDown />}
+                                </div>
                             </div>
                         </div>
+
                         <div className="-mr-2 flex items-center sm:hidden">
                             <button
                                 onClick={() => setIsOpen(!isOpen)}

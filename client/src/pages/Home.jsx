@@ -2,47 +2,47 @@
 import Caraousel from '../components/Caraousel/Caraousel';
 import React, { useEffect, useState } from 'react';
 import { axiosInstance } from '../App';
-import { Link } from 'react-router-dom';
+import CardModel from '../components/Card';
 
 const Home = () => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const response = await axiosInstance.get('/product');
-      if (response.status === 200) {
-        setData(response.data.data.products);
-      }
-    })();
-  }, []);
-  console.log(data);
-  return (
-    <div className="font-sans antialiased pt-10">
-      <Caraousel />
-      <section className="bg-gray-800 text-white py-16">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 mb-8 md:mb-0">
-            <h1 className="text-4xl font-bold leading-tight mb-4">
-              Discover the Best Products for Your Needs
-            </h1>
-            <p className="text-lg mb-6">
-              Find the latest and greatest in our new arrivals section. Shop now
-              and enjoy exclusive deals!
-            </p>
-            <a
-              href="#"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300"
-            >
-              Shop Now
-            </a>
-          </div>
-          <div className="md:w-1/2">
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        (async () => {
+            const response = await axiosInstance.get('/product');
+            if (response.status === 200) {
+                setData(response.data.data.products);
+            }
+        })();
+    }, []);
+    console.log(data);
+    return (
+        <div className=" md:font-sans antialiased pt-10 ">
             <Caraousel />
-          </div>
-        </div>
-      </section>
+            <section className="bg-gray-800 text-white py-16">
+                <div className="container mx-auto px-2 sm:px-4 flex flex-col md:flex-row items-center">
+                    <div className="md:w-1/2 mb-8 md:mb-0">
+                        <h1 className="text-4xl font-bold leading-tight mb-4">
+                            Discover the Best Products for Your Needs
+                        </h1>
+                        <p className="text-lg mb-6">
+                            Find the latest and greatest in our new arrivals
+                            section. Shop now and enjoy exclusive deals!
+                        </p>
+                        <a
+                            href="#"
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300"
+                        >
+                            Shop Now
+                        </a>
+                    </div>
+                    <div className="md:w-1/2">
+                        <Caraousel />
+                    </div>
+                </div>
+            </section>
 
-      {/* Featured Products Section */}
-      {/* <section className="py-16 bg-gray-100">
+            {/* Featured Products Section */}
+            {/* <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-semibold text-center mb-8">
             Featured Products
@@ -77,36 +77,25 @@ const Home = () => {
         </div>
       </section> */}
 
-      {/* Categories Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-semibold text-center mb-8">All</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {/* Repeat this block for each category */}
-            {data.map((item) => (
-              <React.Fragment key={item._id}>
-                <div className="bg-gray-200 p-6 rounded-lg shadow-lg text-center">
-                  <h3 className="text-xl font-semibold mb-4">{item.name}</h3>
-                  <img
-                    src={item.images[0]}
-                    alt="Category"
-                    className="w-full h-32 object-cover mb-4 rounded-lg"
-                  />
-                  <Link
-                    to={`/product/${item._id}`}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
-                  >
-                    Shop Now
-                  </Link>
+            {/* Categories Section */}
+            <section className="py-10md:py-16">
+                <div className="container mx-auto px-4">
+                    <h2 className="text-3xl font-semibold text-center mb-8 mt-4 sm:mt-0">
+                        All Category
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                        {/* Repeat this block for each category */}
+                        {data.map((item) => (
+                            <React.Fragment key={item._id}>
+                                <CardModel name={item.name}  price = {item.price} id= {item.id} image ={item.images[0]} description= {item.description}/>
+                            </React.Fragment>
+                        ))}
+                        {/* End category block */}
+                    </div>
                 </div>
-              </React.Fragment>
-            ))}
-            {/* End category block */}
-          </div>
+            </section>
         </div>
-      </section>
-    </div>
-  );
+    );
 };
 
 export default Home;

@@ -1,8 +1,20 @@
 import { useState,useEffect } from 'react';
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { RxDotFilled } from 'react-icons/rx';
+// import { axiosInstance } from '../../App';
+
 
 const Caraousel = () => {
+  // const [data,setData] = useState();
+  // useEffect(() => {
+  //     (async () => {
+  //         const response = await axiosInstance.get('/product');
+  //         if (response.status === 200) {
+  //             setData(response.data.data.products);
+  //         }
+  //     })();
+  // }, []);
+  // console.log(data);
   const images = [
     'https://imgs.search.brave.com/1hJL_9v10RIIkFtSRTdM_5CpGtFBkXpJme6qv1Jc4co/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ3/MjMzNTQ3Ni9waG90/by9kaWdpdGFsbHkt/Z2VuZXJhdGVkLWlt/YWdlLW9mLWlzb21l/dHJpYy1kYXRhLWNo/YXJ0LmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1RTmtnZlZn/WUNYUTdsbzg0TWdt/Y0NtTVAwb1Fsdl9t/V252aWFPc1ktNEQw/PQ',
     'https://imgs.search.brave.com/l3BDxLLjFGt67IttFIb8wMj8j06oLpmZADINBUL_4Bg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9idXJz/dC5zaG9waWZ5Y2Ru/LmNvbS9waG90b3Mv/bGVuc2JhbGwteWVs/bG93LWFuZC1vcmFu/Z2UtbGlnaHRzLmpw/Zz93aWR0aD0xMDAw/JmZvcm1hdD1wanBn/JmV4aWY9MCZpcHRj/PTA',
@@ -33,12 +45,12 @@ const Caraousel = () => {
   }, [currIndex]);
 
   return (
-    <>
-      <div className="max-w-[1400px] h-[550px] w-full m-auto py-1 px-4 mb-10 relative group">
+    <div className='flex'>
+      <div className="h-[60vh] md:max-w-[1400px] h-[550px] w-full m-auto py-1  px-1 sm:px-4 mb-10 relative group justify-center items-center">
         <img
           src={images[currIndex]}
           alt=""
-          className="w-full h-full rounded-2xl bg-center bg-cover duration-500"
+          className="  h-[50vh] w-[95vw] sm:w-[100vw] md:w-full h-full rounded-2xl bg-center bg-cover duration-500 m-au"
         />
         {/* left arrow */}
         <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer ">
@@ -56,7 +68,7 @@ const Caraousel = () => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
