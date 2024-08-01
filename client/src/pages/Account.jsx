@@ -3,11 +3,15 @@ import { FaEdit, FaEnvelope, FaUser } from 'react-icons/fa';
 import EditProfile from '../components/EditProfile';
 import { axiosInstance } from '../App';
 import { useAuth } from '../store/Auth';
+import DeleteModal from '../components/DeleteModal';
+import { useNavigate } from 'react-router-dom';
 
 const Account = () => {
+    const navigate = useNavigate();
     const { user, setUser } = useAuth();
     const [editMode, setEditMode] = useState(false);
     const [order, setOrder] = useState([]);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -27,12 +31,12 @@ const Account = () => {
         name: user.name,
         email: user.email,
     };
-
-    const onClick = async () => {
+    const onConfirm = async () => {
         try {
             const response = await axiosInstance.delete('/user');
             console.log(response.data);
             setUser(null);
+            navigate('/');
         } catch (error) {
             console.log(error);
         }
@@ -130,12 +134,22 @@ const Account = () => {
                         ))}
                     </div>
                 </div>
-                <button
-                    onClick={onClick}
-                    className="bg-red-500 mt-4  hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-                >
-                    Delete Account
-                </button>
+                {user && (
+                    <div>
+                        <button
+                            onClick={() => setShowModal(true)}
+                            className="bg-red-500 mt-4  hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Delete Account
+                        </button>
+                        {showModal && (
+                            <DeleteModal
+                                onClose={() => setShowModal(!showModal)}
+                                onConfirm={onConfirm}
+                            />
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

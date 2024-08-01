@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { RxDotFilled } from 'react-icons/rx';
 // import { axiosInstance } from '../../App';
@@ -35,6 +35,15 @@ const Caraousel = () => {
   const goToSlide = (slideIndex) => {
     setCurrIndex(slideIndex);
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 2000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, [currIndex]);
+
   return (
     <div className='flex'>
       <div className="h-[60vh] md:max-w-[1400px] h-[550px] w-full m-auto py-1  px-1 sm:px-4 mb-10 relative group justify-center items-center">
