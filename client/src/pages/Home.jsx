@@ -87,7 +87,13 @@ const Home = () => {
                         {/* Repeat this block for each category */}
                         {data.map((item) => (
                             <React.Fragment key={item._id}>
-                                <CardModel name={item.name}  price = {item.price} id= {item.id} image ={item.images[0]} description= {item.description}/>
+                                <CardModel
+                                    name={item.name}
+                                    price={item.price}
+                                    id={item._id}
+                                    image={item.images[0]}
+                                    description={item.description}
+                                />
                             </React.Fragment>
                         ))}
                         {/* End category block */}
