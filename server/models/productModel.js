@@ -8,7 +8,7 @@ const productSchema = new mongoose.Schema(
       trim: true,
       maxlength: [400, 'A product name must have less or equal then 40 characters'],
     },
-    slug: String,
+    slug: [String],
     ratingsAverage: {
       type: Number,
       default: 4.5,
