@@ -42,13 +42,23 @@ const Reviews = () => {
             ) : (
                 <div>
                     {reviews.map((item, index) => (
-                        <div key={index} className="p-4">
-                            <div className="flex items-center text-xl ">
-                                {new Array(item.rating).fill(
-                                    <FaStar className="text-yellow-600" />
+                        <div key={item.id || index} className="p-4">
+                            <div className="flex items-center text-xl">
+                                {Array.from({ length: item.rating }).map(
+                                    (_, starIndex) => (
+                                        <FaStar
+                                            key={`full-${index}-${starIndex}`}
+                                            className="text-yellow-600"
+                                        />
+                                    )
                                 )}
-                                {new Array(5 - item.rating).fill(<FaRegStar />)}
-
+                                {Array.from({ length: 5 - item.rating }).map(
+                                    (_, starIndex) => (
+                                        <FaRegStar
+                                            key={`empty-${index}-${starIndex}`}
+                                        />
+                                    )
+                                )}
                                 <div className="ml-2">{item.rating}/5</div>
                             </div>
                             <div>{item.review}</div>

@@ -4,7 +4,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
 import { LuAlignJustify } from 'react-icons/lu';
 import { RxCross2 } from 'react-icons/rx';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../../store/Auth';
 import {
     Badge,
@@ -15,6 +15,16 @@ import {
     Input,
 } from '@nextui-org/react';
 import LogOutModal from '../LogOutModal';
+import algoliasearch from 'algoliasearch/lite';
+import 'instantsearch.css/themes/satellite.css';
+import { Hits, InstantSearch, SearchBox, Configure } from 'react-instantsearch';
+import { Hit } from '../Hit';
+import './Search.css';
+
+const searchClient = algoliasearch(
+    'F63U2AO97W',
+    'd209e2c3e2037e8c1617b43e1631a9ec'
+);
 
 const Header = () => {
     const location = useLocation();
@@ -30,6 +40,26 @@ const Header = () => {
             document.body.style.overflow = 'auto';
         }
     }, [isOpen]);
+
+    const [openSearchBox, setOpenSearchBox] = useState(false);
+    const menuRef = useRef();
+
+    useEffect(() => {
+        const closeDropdown = (e) => {
+            if (menuRef.current && !menuRef.current.contains(e.target)) {
+                setOpenSearchBox(false);
+            }
+        };
+
+        document.addEventListener('mousedown', closeDropdown);
+        return () => {
+            document.removeEventListener('mousedown', closeDropdown);
+        };
+    }, []);
+    const handleProductClick = (itemId) => {
+        setOpenSearchBox(false);
+    };
+
     const [logout, setLogout] = useState(false);
     return (
         <>
@@ -67,8 +97,36 @@ const Header = () => {
                         </div>
                     </div>
                     {!hide && (
-                        <div className="my-auto">
-                            <Input
+                        <div className="z-10 w-[50%] mt-3">
+                            <InstantSearch
+                                searchClient={searchClient}
+                                indexName="test_products"
+                            >
+                                <Configure hitsPerPage={5} />
+                                <div
+                                    className="ais-InstantSearch"
+                                    ref={menuRef}
+                                >
+                                    <SearchBox
+                                        onClick={() =>
+                                            setOpenSearchBox(!openSearchBox)
+                                        }
+                                    />
+                                    {openSearchBox && (
+                                        <Hits
+                                            hitComponent={(hitProps) => (
+                                                <Hit
+                                                    {...hitProps}
+                                                    onProductClick={
+                                                        handleProductClick
+                                                    }
+                                                />
+                                            )}
+                                        />
+                                    )}
+                                </div>
+                                {/* <div className="my-auto">
+                                <Input
                                 type="text"
                                 startContent={<IoSearch />}
                                 onKeyDown={(e) => {
@@ -82,7 +140,10 @@ const Header = () => {
                                 }}
                                 placeholder="Search FunShop..."
                                 className="w-[40vw] sm:w-[30vw]  border border-gray-300 rounded-md"
-                            />
+                                />
+                                <Hits hitComponent={Hit} />
+                            </div> */}
+                            </InstantSearch>
                         </div>
                     )}
                     <div className="hidden md:flex ">

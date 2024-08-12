@@ -19,12 +19,10 @@ const getAllCart = async (req, res) => {
 };
 const createCart = async (req, res) => {
     try {
-        const user = req.body.user; // User should be passed from the verify token middleware
-        const { productId, quantity } = req.body; // Extract productId and quantity from the request body
+        const user = req.body.user;
+        const { productId, quantity } = req.body; 
         console.log(req.body);
-        // console.log("cart ki ma ki chut")
-        // console.log(req.body);
-        // Validate the product and quantity
+
         if (!productId || !quantity) {
             return res.status(400).json({
                 status: "Fail",
