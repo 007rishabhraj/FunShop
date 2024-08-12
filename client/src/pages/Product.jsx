@@ -133,7 +133,7 @@ const Product = () => {
                         )}
                     </div>
                     <hr className="w-[95%] mx-auto border-1 shadow-2xl border-black my-10" />
-                    <Reviews />
+                    <Reviews productId={productId} />
                 </div>
             )}
         </>
