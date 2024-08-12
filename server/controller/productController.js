@@ -1,3 +1,4 @@
+import { query } from "express";
 import { cache } from "../middleware/checkCache.js";
 import Product from "../models/productModel.js";
 
@@ -17,70 +18,68 @@ const createProduct = async (req, res) => {
     }
 };
 
-const countChars = (str) => {
-    const count = {};
-    for (const char of str) {
-        count[char] = (count[char] || 0) + 1;
-    }
-    return count;
-};
-
-function canFormFrom(s1, s2) {
-    const count1 = countChars(s1);
-    const count2 = countChars(s2);
-
-    for (const char in count1) {
-        if (count1[char] > (count2[char] || 0)) {
-            return false;
-        }
-    }
-
-    return true;
-}
 
 const getAllProduct = async (req, res) => {
+    const {
+        minPrice = 0,
+        maxPrice = 100000,
+        sort = "price",
+        order = "asc",
+        page = 1,
+        limit = 1000,
+        slug = '',
+    } = req.query;
+    console.log(req.query);
+    // Determine sort order
+    const sortOrder = order === "desc" ? -1 : 1;
+
+    // Parse slugs from query parameter and create a filter array
+    const slugArray = slug ? slug.split(",") : [];
+
     try {
-        const {
-            keyword = "",
-            page = 1,
-            field = "price",
-            order = "asc",
-            minPrice = 0,
-            maxPrice = 100000000,
-        } = req.query;
-
-        const pageNum = parseInt(page);
-        const limitNum = parseInt(10);
-
-        const totalProducts = await Product.find();
-        const products = totalProducts
-            .filter((item) =>
-                canFormFrom(keyword.toLowerCase(), item.name.toLowerCase())
-            )
-            .filter((item) => item.price >= minPrice && item.price <= maxPrice)
-            .sort((a, b) =>
-                a[field] < b[field]
-                    ? order === "asc"
-                        ? -1
-                        : 1
-                    : order === "asc"
-                    ? 1
-                    : -1
-            )
-            .splice((pageNum - 1) * limitNum, limitNum);
-
-        const totalPages = Math.ceil(totalProducts.length / limitNum);
+        const products = await Product.aggregate([
+            {
+                $match: {
+                    price: {
+                        $gte: parseFloat(minPrice),
+                        $lte: parseFloat(maxPrice),
+                    },
+                    ...(slugArray.length > 0
+                        ? { slug: { $in: slugArray } }
+                        : {}),
+                },
+            },
+            {
+                $sort: {
+                    [sort]: sortOrder, // Dynamic sorting based on the query parameter
+                },
+            },
+            {
+                $skip: (parseInt(page) - 1) * parseInt(limit),
+            },
+            {
+                $limit: parseInt(limit),
+            },
+        ]);
+        const cacheKey = `products_${slug}_${minPrice}_${maxPrice}_${sort}_${order}_${page}_${limit}`
+        cache.set(cacheKey, {
+            status: "success",
+            count: products.length,
+            page:page,
+            result: products,
+        });
         res.status(200).json({
             status: "success",
-            results: products.length,
-            total: totalPages,
-            data: {
-                products,
-            },
+            count: products.length,
+            page:page,
+            result: products,
         });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Server Error");
+    } catch (error) {
+        console.error("An error occurred:", error.message);
+        res.status(500).json({
+            status: "error",
+            message: "An error occurred while fetching products.",
+        });
     }
 };
 
@@ -88,7 +87,7 @@ const getProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
         if (!product) {
-            return res.status(400).json({ message: "Product not found" });
+            return res.status(404).json({ message: "Product not found" });
         }
         res.status(200).json({
             status: "success",

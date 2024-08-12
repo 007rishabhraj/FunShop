@@ -8,9 +8,13 @@ const Rating = ({ rating }) => {
     console.log(wholeStar, pointStar, remaining, width);
     return (
         <>
-            {new Array(wholeStar).fill(<FaStar />)}
-            {pointStar !== 0 && <FaStarHalf />}
-            {new Array(remaining).fill(<FaRegStar />)}
+            {Array.from({ length: wholeStar }).map((_, index) => (
+                <FaStar key={`full-${index}`} />
+            ))}
+            {pointStar !== 0 && <FaStarHalf key="half-star" />}
+            {Array.from({ length: remaining }).map((_, index) => (
+                <FaRegStar key={`empty-${index}`} />
+            ))}
         </>
     );
 };

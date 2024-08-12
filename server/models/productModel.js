@@ -39,5 +39,9 @@ const productSchema = new mongoose.Schema(
   }
 )
 
+productSchema.statics.findBySlug = function(slug) {
+  return this.find({ slug: slug });
+};
+
 const Product = mongoose.model("Product", productSchema);
 export default Product;

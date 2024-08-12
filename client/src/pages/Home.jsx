@@ -1,22 +1,56 @@
-// import { FaStar } from 'react-icons/fa';
+import { FaStar } from 'react-icons/fa';
 import Caraousel from '../components/Caraousel/Caraousel';
 import React, { useEffect, useState } from 'react';
 import { axiosInstance } from '../App';
 import CardModel from '../components/Card';
+import UseOnScreen from '../hooks/useOnScreen';
+import { Button } from '@nextui-org/button';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-    const [data, setData] = useState([]);
+    const navigate = useNavigate()
+    const [data, setData] = useState({
+        laptops: [],
+        shoes: [],
+        fashion: [],
+        headphones: [],
+    });
+    const fetchData = async (category) => {
+        try {
+            const res = await axiosInstance.get(
+                `/product?slug=${category}&limit=8`
+            );
+            return res.data.result;
+        } catch (error) {
+            console.error(`Error fetching data for ${category}:`, error);
+            return [];
+        }
+    };
+
     useEffect(() => {
-        (async () => {
-            const response = await axiosInstance.get('/product');
-            if (response.status === 200) {
-                setData(response.data.data.products);
-            }
-        })();
+        const categories = ['laptops', 'shoes', 'fashion', 'headphones'];
+
+        const fetchAllData = async () => {
+            const results = await Promise.all(
+                categories.map((category) => fetchData(category))
+            );
+            // console.log(results);
+            const newData = {};
+            categories.forEach((category, index) => {
+                newData[category] = results[index];
+            });
+            // console.log(newData);
+            setData(newData);
+        };
+        // console.log(data);
+        fetchAllData();
     }, []);
-    console.log(data);
+
+    const handleShowMore = (category) => {
+      navigate('/search', { state: { category } });
+  };
     return (
-        <div className=" md:font-sans antialiased pt-10 ">
+        <div className=" md:font-sans antialiased pt-10 py-5">
             <Caraousel />
             <section className="bg-gray-800 text-white py-16">
                 <div className="container mx-auto px-2 sm:px-4 flex flex-col md:flex-row items-center">
@@ -41,51 +75,18 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Featured Products Section */}
-            {/* <section className="py-16 bg-gray-100">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-semibold text-center mb-8">
-            Featured Products
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <img
-                src={productImage}
-                alt="Product"
-                className="w-full h-48 object-cover mb-4 rounded-lg"
-              />
-              <h3 className="text-lg font-semibold mb-2">Product Name</h3>
-              <p className="text-gray-600 mb-2">
-                Short description of the product.
-              </p>
-              <div className="flex items-center mb-2">
-                <FaStar className="text-yellow-400 mr-1" />
-                <FaStar className="text-yellow-400 mr-1" />
-                <FaStar className="text-yellow-400 mr-1" />
-                <FaStar className="text-yellow-400 mr-1" />
-                <FaStar className="text-gray-300" />
-              </div>
-              <p className="text-xl font-bold">$29.99</p>
-              <a
-                href="#"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg mt-4 inline-block"
-              >
-                Buy Now
-              </a>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
             {/* Categories Section */}
-            <section className="py-10md:py-16">
+            <section className="py-10md:py-16 w-[90vw] mx-auto mt-6 ">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-3xl font-semibold text-center mb-8 mt-4 sm:mt-0">
-                        All Category
+                    <h2
+                        id="shoes"
+                        className="text-3xl font-semibold text-center mb-8 sm:mt-0"
+                    >
+                        Laptops
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                         {/* Repeat this block for each category */}
-                        {data.map((item) => (
+                        {data['laptops'].map((item) => (
                             <React.Fragment key={item._id}>
                                 <CardModel
                                     name={item.name}
@@ -96,7 +97,98 @@ const Home = () => {
                                 />
                             </React.Fragment>
                         ))}
-                        {/* End category block */}
+                    </div>
+                    <div className="flex justify-end mt-5">
+                        <button className="bg-black text-white p-2 rounded-lg font-semibold" onClick={()=>handleShowMore('laptops')}>
+                            Show More
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <section className="py-10md:py-16 w-[90vw] mx-auto mt-6">
+                <div className="container mx-auto px-4">
+                    <h2
+                        id="shoes"
+                        className="text-3xl font-semibold text-center mb-8 sm:mt-0"
+                    >
+                        Fashion
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                        {/* Repeat this block for each category */}
+                        {data['fashion'].map((item) => (
+                            <React.Fragment key={item._id}>
+                                <CardModel
+                                    name={item.name}
+                                    price={item.price}
+                                    id={item._id}
+                                    image={item.images[0]}
+                                    description={item.description}
+                                />
+                            </React.Fragment>
+                        ))}
+                    </div>
+                    <div className="flex justify-end mt-5">
+                        <button className="bg-black text-white p-2 rounded-lg font-semibold" onClick={()=>handleShowMore('fashion')}>
+                            Show More
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <section className="py-10md:py-16 w-[90vw] mx-auto mt-6">
+                <div className="container mx-auto px-4">
+                    <h2
+                        id="shoes"
+                        className="text-3xl font-semibold text-center mb-8 sm:mt-0"
+                    >
+                        Shoes
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                        {/* Repeat this block for each category */}
+                        {data['shoes'].map((item) => (
+                            <React.Fragment key={item._id}>
+                                <CardModel
+                                    name={item.name}
+                                    price={item.price}
+                                    id={item._id}
+                                    image={item.images[0]}
+                                    description={item.description}
+                                />
+                            </React.Fragment>
+                        ))}
+                    </div>
+                    <div className="flex justify-end mt-5">
+                        <button className="bg-black text-white p-2 rounded-lg font-semibold" onClick={()=>handleShowMore('shoes')}>
+                            Show More
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <section className="py-10md:py-16 w-[90vw] mx-auto mt-6">
+                <div className="container mx-auto px-4">
+                    <h2
+                        id="shoes"
+                        className="text-3xl font-semibold text-center mb-8 sm:mt-0"
+                    >
+                        Headphones
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                        {/* Repeat this block for each category */}
+                        {data['headphones'].map((item) => (
+                            <React.Fragment key={item._id}>
+                                <CardModel
+                                    name={item.name}
+                                    price={item.price}
+                                    id={item._id}
+                                    image={item.images[0]}
+                                    description={item.description}
+                                />
+                            </React.Fragment>
+                        ))}
+                    </div>
+                    <div className="flex justify-end mt-5">
+                        <button className="bg-black text-white p-2 rounded-lg font-semibold" onClick={()=>handleShowMore('headphones')}>
+                            Show More
+                        </button>
                     </div>
                 </div>
             </section>

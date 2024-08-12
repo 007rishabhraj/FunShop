@@ -1,55 +1,93 @@
-import { useState, useEffect } from 'react';
-import { axiosInstance } from '../App';
-import ProductCard from '../components/ProductCard';
-import { Select, SelectItem, Slider, Spinner } from '@nextui-org/react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Select, SelectItem, Slider, Spinner, Button } from '@nextui-org/react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import CardModel from '../components/Card';
+import useOnScreen from '../hooks/useOnScreen';
 
 const Search = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [searchParam] = useSearchParams();
-    const keyword = searchParam.get('keyword');
+    const location = useLocation();
+    const category = location.state?.category;
+    const navigate = useNavigate();
+    const [sliderValue, setSliderValue] = useState([0, 1000]);
+    const [hasPropsChanged, setHasPropsChanged] = useState(false);
     const [filter, setFilter] = useState({
-        keyword: keyword ? keyword : '',
-        order: 'asc',
-        sortBy: 'price',
         minPrice: 0,
-        maxPrice: 10000000,
+        maxPrice: 100000,
+        sort: 'price',
+        order: 'asc',
+        page: 1,
+        limit: 15,
+        slug: [],
     });
-    const [page, setPage] = useState(1);
-    const [totalPage, setTotalPage] = useState(1);
+
     useEffect(() => {
-        if (keyword) {
-            setFilter((t) => ({ ...t, keyword: keyword ? keyword : '' }));
-        } else {
-            setFilter((t) => ({ ...t, keyword: '' }));
+        if (category) {
+            setFilter((prev) => ({
+                ...prev,
+                slug: [category],
+            }));
+            setHasPropsChanged(true); // Mark that props have changed
         }
-    }, [keyword]);
+    }, [category]);
+
     useEffect(() => {
-        const fetchProducts = async () => {
-            setLoading(true);
-            try {
-                const response = await axiosInstance.get(
-                    `/product?keyword=${filter.keyword}&order=${filter.order}&field=${filter.sortBy}&minPrice=${filter.minPrice}&maxPrice=${filter.maxPrice}&page=${page}`
-                );
+        if (hasPropsChanged) {
+            setFilter((prev) => ({
+                ...prev,
+                page: 1, // Reset page to 1 if props have changed
+            }));
+        }
+    }, [hasPropsChanged]);
 
-                const productsData = response.data.data.products;
-                setTotalPage(response.data.total);
-                setProducts(productsData);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching products:', error);
-                setLoading(false);
-            }
-        };
+    const { products, hasMore, loading, error } = useOnScreen(
+        filter,
+        hasPropsChanged,
+        setHasPropsChanged
+    );
+    const observer = useRef();
+    const lastProductRef = useCallback(
+        (node) => {
+            if (loading) return;
+            if (observer.current) observer.current.disconnect();
+            observer.current = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && hasMore) {
+                    console.log('visible');
+                    setFilter((prevFilter) => ({
+                        ...prevFilter,
+                        page: prevFilter.page + 1,
+                    }));
+                    console.log(filter.page);
+                }
+            });
 
-        fetchProducts();
-    }, [filter, page]);
+            if (node) observer.current.observe(node);
+        },
+        [loading, hasMore]
+    );
+    const onClickHandler = (itemId) => {
+        navigate(`/product/${itemId}`);
+    };
+
+    const handleSliderChange = (newValue) => {
+        setSliderValue(newValue);
+        console.log(newValue);
+    };
+
+    const handleGoBtnSubmit = async () => {
+        setHasPropsChanged(true);
+        setFilter((prevFilter) => ({
+            ...prevFilter,
+            minPrice: sliderValue[0],
+            maxPrice: sliderValue[1],
+        }));
+        console.log(filter.minPrice, filter.maxPrice);
+    };
+
 
     return (
-        <div className="flex flex-col  w-full ">
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-4  sm:ml-20">
-                <span className="text-lg font-bold ">Filters: </span>
+        <div className="flex flex-col w-full -z-10">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-4 sm:ml-20">
+                <span className="text-lg font-bold">Filters: </span>
                 <Select
                     label="Sort By:"
                     className="w-72"
@@ -96,27 +134,82 @@ const Search = () => {
                     radius="lg"
                     size="md"
                     step={50}
+                    value={sliderValue}
                     minValue={0}
-                    maxValue={100000}
-                    defaultValue={[0, 100000]}
+                    maxValue={1000}
+                    defaultValue={[10, 400]}
+                    onChange={handleSliderChange}
                     formatOptions={{ style: 'currency', currency: 'INR' }}
                 />
+                <div className="items-center justify-center">
+                    <Button
+                        color="primary"
+                        onClick={() => handleGoBtnSubmit()}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleGoBtnSubmit();
+                            }
+                        }}
+                    >
+                        Go
+                    </Button>
+                </div>
             </div>
-            {loading && (
-                <div className="h-[100vh] w-full flex justify-center items-center">
-                    <Spinner label="Loading..." size="lg" color="primary" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-5 mx-auto">
+                {products.length > 0 && products.map((item, index) => {
+                    if (products.length - 1 === index) {
+                        return (
+                            <div
+                                key={index}
+                                ref={lastProductRef}
+                                className="cursor-pointer"
+                                onClick={() => onClickHandler(item._id)}
+                            >
+                                <CardModel
+                                    name={item.name}
+                                    price={item.price}
+                                    id={item._id}
+                                    image={item.images[0]}
+                                    description={item.description}
+                                />
+                            </div>
+                        );
+                    } else {
+                        return (
+                            <div
+                                key={index}
+                                className="cursor-pointer"
+                                onClick={() => onClickHandler(item._id)}
+                            >
+                                <CardModel
+                                    name={item.name}
+                                    price={item.price}
+                                    id={item._id}
+                                    image={item.images[0]}
+                                    description={item.description}
+                                />
+                            </div>
+                        );
+                    }
+                })}
+            </div>
+            {!products.length && <div className='w-full h-full flex justify-center items-center'>
+                <img src="./cat.jpg" alt="" className=''/>
+                </div>}
+            {hasMore && (
+                <div>
+                    {
+                        <div className="w-full h-20 my-8 flex justify-center items-center">
+                            <Spinner
+                                label="Loading..."
+                                size="lg"
+                                color="primary"
+                            />
+                        </div>
+                    }
                 </div>
             )}
-            {!loading && (
-                <>
-                    <ProductCard
-                        products={products}
-                        totalPage={totalPage}
-                        page={page}
-                        setPage={setPage}
-                    />
-                </>
-            )}
+            <div>{error && 'Error'}</div>
         </div>
     );
 };
