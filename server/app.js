@@ -11,9 +11,9 @@ import { orderRouter } from "./routes/orderRoutes.js";
 import { reviewRouter } from "./routes/reviewRoutes.js";
 
 const corsOption = {
-    origin: ["http://localhost:5173"],
-    credentials: true,
-    methods: ["GET", "POST", "PATCH", "DELETE"],
+  origin: ["https://fun-shop.vercel.app/"],
+  credentials: true,
+  methods: ["GET", "POST", "PATCH", "DELETE"],
 };
 
 app.use(cors(corsOption));
