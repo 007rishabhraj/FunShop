@@ -22,8 +22,8 @@ import { Hit } from '../Hit';
 import './Search.css';
 
 const searchClient = algoliasearch(
-    'F63U2AO97W',
-    'd209e2c3e2037e8c1617b43e1631a9ec'
+    import.meta.env.VITE_ALGOLIA_APP_ID,
+    import.meta.env.VITE_ALGOLIA_SEARCH_KEY
 );
 
 const Header = () => {
