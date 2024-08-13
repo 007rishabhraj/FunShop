@@ -5,7 +5,7 @@ const Rating = ({ rating }) => {
     const pointStar = Number(rating) - wholeStar;
     const remaining = 5 - Math.ceil(rating);
     const width = (16 * pointStar).toFixed(1);
-    console.log(wholeStar, pointStar, remaining, width);
+    // console.log(wholeStar, pointStar, remaining, width);
     return (
         <>
             {Array.from({ length: wholeStar }).map((_, index) => (

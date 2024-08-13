@@ -44,7 +44,7 @@ const Search = () => {
         hasPropsChanged,
         setHasPropsChanged
     );
-    console.log('yeh wala', products);
+    // console.log('yeh wala', products);
     const observer = useRef();
     const lastProductRef = useCallback(
         (node) => {
@@ -52,12 +52,12 @@ const Search = () => {
             if (observer.current) observer.current.disconnect();
             observer.current = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting && hasMore) {
-                    console.log('visible');
+                    // console.log('visible');
                     setFilter((prevFilter) => ({
                         ...prevFilter,
                         page: prevFilter.page + 1,
                     }));
-                    console.log(filter.page);
+                    // console.log(filter.page);
                 }
             });
 
@@ -71,7 +71,7 @@ const Search = () => {
 
     const handleSliderChange = (newValue) => {
         setSliderValue(newValue);
-        console.log(newValue);
+        // console.log(newValue);
     };
 
     const handleGoBtnSubmit = async () => {
@@ -81,7 +81,7 @@ const Search = () => {
             minPrice: sliderValue[0],
             maxPrice: sliderValue[1],
         }));
-        console.log(filter.minPrice, filter.maxPrice);
+        // console.log(filter.minPrice, filter.maxPrice);
     };
 
     return (
@@ -121,7 +121,7 @@ const Search = () => {
                                 order: 'desc',
                             }));
                         }
-                        console.log(filter);
+                        // console.log(filter);
                     }}
                     placeholder=" "
                 >
@@ -141,7 +141,7 @@ const Search = () => {
                     maxValue={1000}
                     defaultValue={[10, 400]}
                     onChange={handleSliderChange}
-                    formatOptions={{ style: 'currency', currency: 'INR' }}
+                    formatOptions={{ style: 'currency', currency: 'USD' }}
                 />
                 <div className="items-center justify-center">
                     <Button

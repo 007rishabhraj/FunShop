@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 export const Hit = ({ hit,onProductClick}) => {
     const navigate = useNavigate();
-    console.log('Hit data:', hit);
+    // console.log('Hit data:', hit);
     const handleClick = (itemId) => {
-        console.log('Hello world');
+        // console.log('Hello world');
         onProductClick()
         navigate(`/product/${itemId}`);
     };

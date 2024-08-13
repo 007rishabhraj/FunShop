@@ -10,12 +10,12 @@ const Cart = () => {
         return res;
     };
     const handleDeleteBtn = async (productId, quantity) => {
-        console.log(productId, quantity);
+        // console.log(productId, quantity);
         try {
             const res = await axiosInstance.delete('/cart', {
                 data: { productId, quantity }
             });
-            console.log(res.data);
+            // console.log(res.data);
     
             // Update the state by removing the deleted product
             setProducts(prevProducts => 

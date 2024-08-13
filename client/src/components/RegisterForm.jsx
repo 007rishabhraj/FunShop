@@ -56,7 +56,7 @@ const RegisterForm = () => {
         '/user/signup',
         body,
       );
-      console.log(response);
+      // console.log(response);
       setUser(response.data.user)
       navigate('/')
     } catch (error) {

@@ -34,14 +34,14 @@ const Account = () => {
     const onConfirm = async () => {
         try {
             const response = await axiosInstance.delete('/user');
-            console.log(response.data);
+            // console.log(response.data);
             setUser(null);
             navigate('/');
         } catch (error) {
             console.log(error);
         }
     };
-    console.log(order);
+    // console.log(order);
     return (
         <div className="font-sans antialiased bg-gray-100 min-h-screen py-8">
             <div className="container mx-auto px-4">

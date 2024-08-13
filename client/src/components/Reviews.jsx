@@ -17,7 +17,7 @@ const ReviewSection = ({ productId }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log(productId);
+                // console.log(productId);
 
                 // Using `params` to pass `productId` as a query parameter
                 const response = await axiosInstance.get(`/review/${productId}`
@@ -25,7 +25,7 @@ const ReviewSection = ({ productId }) => {
 
                 // Assuming your API returns an array of reviews
                 const reviews = response.data.data;
-                console.log(reviews);
+                // console.log(reviews);
 
                 setUserReviews(reviews);
             } catch (error) {
@@ -35,7 +35,7 @@ const ReviewSection = ({ productId }) => {
 
         fetchData();
     }, [productId]); // Add `productId` to the dependency array
-    console.log(userReviews);
+    // console.log(userReviews);
     
     return (
         <div className="max-w-2xl flex flex-col justify-center items-center mx-auto p-4">

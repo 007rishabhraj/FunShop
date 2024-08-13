@@ -15,7 +15,7 @@ const LoginForm = () => {
     event.preventDefault();
     try {
       const response = await axiosInstance.post('/user/login', input);
-      console.log(response.data);
+      // console.log(response.data);
       setUser(response.data.user);
       if (location.state) {
         navigate(location.state.from);
