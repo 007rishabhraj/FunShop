@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import  { useState, useRef, useEffect, useCallback } from 'react';
 import { Select, SelectItem, Slider, Spinner, Button } from '@nextui-org/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CardModel from '../components/Card';
@@ -85,7 +85,7 @@ const Search = () => {
 
 
     return (
-        <div className="flex flex-col w-full z-5">
+        <div className="flex flex-col w-full z-10">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-4 sm:ml-20">
                 <span className="text-lg font-bold">Filters: </span>
                 <Select
