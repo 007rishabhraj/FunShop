@@ -4,7 +4,7 @@ import mongoose from "mongoose"
 
 export const createReview = async(req,res) => {
     try {
-        console.log(req.body);
+        // console.log(req.body);
         const {rating , description,productId} = req.body
         const userId = req.body.user._id
         const result = await Review.create({description:description,rating:rating,userId:userId,productId:productId})
@@ -23,12 +23,12 @@ export const createReview = async(req,res) => {
 export const getReviews = async(req,res) => {
     try {
       // Extract productId from req.query instead of req.params
-      const { productId } = req.query;
-      console.log("Product ID:", productId);
+      const { productId } = req.params;
+      // console.log("Product ID:", productId);
 
       // Query the reviews collection using the extracted productId
       const result = await Review.find({ productId });
-      console.log("Review Result:", result);
+      // console.log("Review Result:", result);
 
       // Respond with the found reviews
       res.status(200).json({

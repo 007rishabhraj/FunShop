@@ -97,7 +97,7 @@ const Header = () => {
                         </div>
                     </div>
                     {!hide && (
-                        <div className="z-10 w-[50%] mt-3">
+                        <div className="w-[50%] mt-3 z-40">
                             <InstantSearch
                                 searchClient={searchClient}
                                 indexName="test_products"
@@ -113,16 +113,18 @@ const Header = () => {
                                         }
                                     />
                                     {openSearchBox && (
-                                        <Hits
-                                            hitComponent={(hitProps) => (
-                                                <Hit
-                                                    {...hitProps}
-                                                    onProductClick={
-                                                        handleProductClick
-                                                    }
-                                                />
-                                            )}
-                                        />
+                                        <div className='z-50'>
+                                            <Hits
+                                                hitComponent={(hitProps) => (
+                                                    <Hit
+                                                        {...hitProps}
+                                                        onProductClick={
+                                                            handleProductClick
+                                                        }
+                                                    />
+                                                )}
+                                            />
+                                        </div>
                                     )}
                                 </div>
                                 {/* <div className="my-auto">

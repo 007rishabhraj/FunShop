@@ -20,9 +20,7 @@ const ReviewSection = ({ productId }) => {
                 console.log(productId);
 
                 // Using `params` to pass `productId` as a query parameter
-                const response = await axiosInstance.get('/review',{
-                    params: {productId}
-                }
+                const response = await axiosInstance.get(`/review/${productId}`
                 );
 
                 // Assuming your API returns an array of reviews

@@ -1,4 +1,4 @@
-import  { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Select, SelectItem, Slider, Spinner, Button } from '@nextui-org/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CardModel from '../components/Card';
@@ -44,6 +44,7 @@ const Search = () => {
         hasPropsChanged,
         setHasPropsChanged
     );
+    console.log('yeh wala', products);
     const observer = useRef();
     const lastProductRef = useCallback(
         (node) => {
@@ -83,7 +84,6 @@ const Search = () => {
         console.log(filter.minPrice, filter.maxPrice);
     };
 
-
     return (
         <div className="flex flex-col w-full z-10">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-4 sm:ml-20">
@@ -95,31 +95,33 @@ const Search = () => {
                     variant="bordered"
                     defaultSelectedKeys={['plh']}
                     onChange={(e) => {
+                        setHasPropsChanged(true);
                         if (e.target.value === 'plh') {
                             setFilter((t) => ({
                                 ...t,
-                                sortBy: 'price',
+                                sort: 'price',
                                 order: 'asc',
                             }));
                         } else if (e.target.value === 'phl') {
                             setFilter((t) => ({
                                 ...t,
-                                sortBy: 'price',
+                                sort: 'price',
                                 order: 'desc',
                             }));
                         } else if (e.target.value === 'rlh') {
                             setFilter((t) => ({
                                 ...t,
-                                sortBy: 'ratingsAverage',
+                                sort: 'ratingsAverage',
                                 order: 'asc',
                             }));
                         } else {
                             setFilter((t) => ({
                                 ...t,
-                                sortBy: 'ratingsAverage',
+                                sort: 'ratingsAverage',
                                 order: 'desc',
                             }));
                         }
+                        console.log(filter);
                     }}
                     placeholder=" "
                 >
@@ -154,48 +156,66 @@ const Search = () => {
                         Go
                     </Button>
                 </div>
+                {/* <div>
+                    <Select
+                        label="Category"
+                        placeholder="Select an animal"
+                        selectionMode="multiple"
+                        className="w-72"
+                        size="sm"
+                        variant="bordered"
+                    >
+                        <SelectItem key="plh">Electronics</SelectItem>
+                        <SelectItem key="phl">Laptop</SelectItem>
+                        <SelectItem key="rlh">Shoes</SelectItem>
+                        <SelectItem key="rhl">Headphones</SelectItem>
+                    </Select>
+                </div> */}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-5 mx-auto">
-                {products.length > 0 && products.map((item, index) => {
-                    if (products.length - 1 === index) {
-                        return (
-                            <div
-                                key={index}
-                                ref={lastProductRef}
-                                className="cursor-pointer"
-                                onClick={() => onClickHandler(item._id)}
-                            >
-                                <CardModel
-                                    name={item.name}
-                                    price={item.price}
-                                    id={item._id}
-                                    image={item.images[0]}
-                                    description={item.description}
-                                />
-                            </div>
-                        );
-                    } else {
-                        return (
-                            <div
-                                key={index}
-                                className="cursor-pointer"
-                                onClick={() => onClickHandler(item._id)}
-                            >
-                                <CardModel
-                                    name={item.name}
-                                    price={item.price}
-                                    id={item._id}
-                                    image={item.images[0]}
-                                    description={item.description}
-                                />
-                            </div>
-                        );
-                    }
-                })}
+                {products.length > 0 &&
+                    products.map((item, index) => {
+                        if (products.length - 1 === index) {
+                            return (
+                                <div
+                                    key={index}
+                                    ref={lastProductRef}
+                                    className="cursor-pointer"
+                                    onClick={() => onClickHandler(item._id)}
+                                >
+                                    <CardModel
+                                        name={item.name}
+                                        price={item.price}
+                                        id={item._id}
+                                        image={item.images[0]}
+                                        description={item.description}
+                                    />
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div
+                                    key={index}
+                                    className="cursor-pointer"
+                                    onClick={() => onClickHandler(item._id)}
+                                >
+                                    <CardModel
+                                        name={item.name}
+                                        price={item.price}
+                                        id={item._id}
+                                        image={item.images[0]}
+                                        description={item.description}
+                                    />
+                                </div>
+                            );
+                        }
+                    })}
             </div>
-            {!products.length && <div className='w-full h-full flex justify-center items-center'>
-                <img src="./cat.jpg" alt="" className=''/>
-                </div>}
+            {!products.length && (
+                <div className="w-full h-full flex justify-center items-center">
+                    <img src="./cat.jpg" alt="" className="" />
+                </div>
+            )}
             {hasMore && (
                 <div>
                     {

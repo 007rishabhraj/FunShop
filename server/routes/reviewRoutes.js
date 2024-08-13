@@ -10,6 +10,6 @@ export const reviewRouter = express.Router();
 
 reviewRouter.route("/").all(verifyUser).post(createReview);
 reviewRouter.use(verifyUser).get("/all", getAllReviews);
-reviewRouter.route("/review").get(verifyUser, getReviews);
+reviewRouter.route("/:productId").get(verifyUser, getReviews);
 
 

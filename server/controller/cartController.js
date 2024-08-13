@@ -21,7 +21,7 @@ const createCart = async (req, res) => {
     try {
         const user = req.body.user;
         const { productId, quantity } = req.body; 
-        console.log(req.body);
+        // console.log(req.body);
 
         if (!productId || !quantity) {
             return res.status(400).json({
@@ -34,19 +34,19 @@ const createCart = async (req, res) => {
         // console.log( user.cart[0]._id.toString());
         const existingCartItem = user.cart?.find((item) => {
             const id = item.productId?.toString();
-            console.log(id, " ", productId);
-            console.log(id === productId);
+            // console.log(id, " ", productId);
+            // console.log(id === productId);
             return id === productId;
         });
 
-        console.log("kya huya", existingCartItem);
+        // console.log("kya huya", existingCartItem);
         if (existingCartItem) {
             // Update the quantity if the product already exists in the cart
             existingCartItem.quantity += quantity;
         } else {
             // Add the new cart item to the cart array
             user.cart.push({ productId, quantity });
-            console.log(user.cart);
+            // console.log(user.cart);
         }
 
         // Save the user with the updated cart
@@ -68,26 +68,26 @@ const createCart = async (req, res) => {
 const removeCart = async (req, res) => {
     try {
         const user = req.body.user; // User should be passed from the verify token middleware
-        const { product, quantity } = req.body; // Extract product and quantity from the request body
-
-        // Validate the product and quantity
-        if (!product || quantity == null) {
+        const { productId, quantity } = req.body; // Extract productId and quantity from the request body
+        console.log(productId, quantity);
+        // Validate the productId and quantity
+        if (!productId || quantity == null) {
             return res.status(400).json({
                 status: "Fail",
-                message: "Product and quantity are required",
+                message: "ProductId and quantity are required",
             });
         }
 
-        // Find the product in the cart
+        // Find the productId in the cart
         const cartItemIndex = user.cart.findIndex(
-            (item) => item.product.toString() === product
+            (item) => item.productId.toString() === productId
         );
 
-        // If the product is not in the cart, return an error
+        // If the productId is not in the cart, return an error
         if (cartItemIndex === -1) {
             return res.status(404).json({
                 status: "Fail",
-                message: "Product not found in cart",
+                message: "ProductId not found in cart",
             });
         }
 

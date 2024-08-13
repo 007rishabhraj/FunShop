@@ -29,7 +29,7 @@ const getAllProduct = async (req, res) => {
         limit = 1000,
         slug = '',
     } = req.query;
-    console.log(req.query);
+    // console.log(req.query);
     // Determine sort order
     const sortOrder = order === "desc" ? -1 : 1;
 

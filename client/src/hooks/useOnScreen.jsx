@@ -13,7 +13,7 @@ export default function useOnScreen(
     const [products, setProducts] = useState([]);
     const [hasMore, setHasMore] = useState(false);
     let cancel;
-    
+
     useEffect(() => {
         console.log("in hook",query);
         const fetchData = async () => {
