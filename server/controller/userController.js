@@ -4,13 +4,13 @@ import User from "../models/userModel.js";
 import sendToken from "../utils/sendToken.js";
 
 const login = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const { email, password } = req.body;
     try {
         // Find user by email
         const user = await User.findOne({ email });
-        console.log("hm hi hai user")
-        console.log(user);
+        // console.log("hm hi hai user")
+        // console.log(user);
         // Check if user exists
         if (!user) {
             return res.status(404).json({
@@ -19,9 +19,9 @@ const login = async (req, res) => {
         }
 
         // Validate password
-        console.log("ye kya ho gya hai");
-        console.log(typeof password);
-        console.log(typeof user.password);
+        // console.log("ye kya ho gya hai");
+        // console.log(typeof password);
+        // console.log(typeof user.password);
         const isValid = await bcrypt.compareSync(password, user.password);
         if (!isValid) {
             return res.status(400).json({
@@ -43,7 +43,7 @@ const login = async (req, res) => {
 
 
 const signup = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
 
     const { email, password, name } = req.body;
     if (!email || !password || !name) {
@@ -67,7 +67,7 @@ const signup = async (req, res) => {
         var salt = bcrypt.genSaltSync(10);
         // const hashPassword = await bcrypt.hash(password);
         var hashPassword = bcrypt.hashSync(password, salt);
-        console.log("hash password ", hashPassword);
+        // console.log("hash password ", hashPassword);
         // Create a new user instance
         user = await User.create({ email, password: hashPassword, name });
 

@@ -67,7 +67,7 @@ const Product = () => {
                                 ))}
                             </div>
 
-                            <div className="flex justify-center items-center h-[600px] min-w-72 max-w-[25vw] lg:w-[600px] w-auto border border-gray-300 rounded-lg overflow-hidden ">
+                            <div className="flex justify-center items-center h-[600px] min-w-[35vw] max-w-[50vw] lg:w-[600px] w-auto border border-gray-300 rounded-lg overflow-hidden ">
                                 <img
                                     src={data.images[currImageIndex]}
                                     alt="Sample Image"
@@ -76,7 +76,7 @@ const Product = () => {
                             </div>
                         </div>
 
-                        <div className="w-auto flex flex-col space-y-2">
+                        <div className="w-auto flex flex-col space-y-2 px-5">
                             <div className="text-xl sm:text-2xl font-semibold text-gray-800">
                                 {data.name}
                             </div>
@@ -100,7 +100,7 @@ const Product = () => {
                                 <CiSquareMinus
                                     className="cursor-pointer text-2xl text-gray-700 hover:text-gray-900 transition-colors duration-300"
                                     onClick={() =>
-                                        setQuantity((t) => (t > 0 ? t - 1 : 0))
+                                        setQuantity((t) => (t > 1 ? t - 1 : 1))
                                     }
                                 />
                                 <div className="text-xl font-semibold">
@@ -115,9 +115,9 @@ const Product = () => {
                                     }
                                 />
                             </div>
-                            <button className="w-40 py-2 px-1 rounded-md text-white bg-blue-500">
+                            {/* <button className="w-40 py-2 px-1 rounded-md text-white bg-blue-500">
                                 Buy Now
-                            </button>
+                            </button> */}
                             <button
                                 className="w-40 py-2 rounded-md text-white bg-blue-500"
                                 onClick={() => handleAddToCartSubmit(data)}
