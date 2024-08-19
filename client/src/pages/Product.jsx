@@ -20,11 +20,11 @@ const Product = () => {
         navigate('/login');
     };
     const onClose = () => setShowLoginOption(false);
-    console.log(productId);
+    // console.log(productId);
     useEffect(() => {
         (async () => {
             const res = await axiosInstance.get(`/product/${productId}`);
-            console.log(res);
+            // console.log(res);
             if (res.status === 200) setData(res.data.data.product);
         })();
     }, [productId]);
@@ -34,13 +34,13 @@ const Product = () => {
         return formattedNumber;
     };
     const handleAddToCartSubmit = async (data) => {
-        console.log('add');
+        // console.log('add');
         if (user) {
             const res = await axiosInstance.post('/cart', {
                 productId: data._id,
                 quantity: 1,
             });
-            console.log(res.data.user);
+            // console.log(res.data.user);
             setUser(res.data.user);
         } else {
             setShowLoginOption(true);
@@ -91,7 +91,7 @@ const Product = () => {
                             <div className="flex items-center space-x-2">
                                 <PiCurrencyInrBold className="text-xl text-gray-800" />
                                 <span className="text-2xl font-bold">
-                                    {numberWithCommas(data.price * 84)}/-
+                                    {numberWithCommas(data.price)}/-
                                 </span>
                             </div>
                             <div>{data.description}</div>

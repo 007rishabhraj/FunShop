@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
                 const response = await axiosInstance.get('/user');
                 setUser(response.data);
             } catch (error) {
-                console.log('User Not logged in');
+                // console.log('User Not logged in');
                 console.log(error);
             }
             setLoading(false);

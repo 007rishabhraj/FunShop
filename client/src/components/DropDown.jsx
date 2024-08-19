@@ -17,7 +17,7 @@ const DropDown = () => {
   const handleLogout = async () => {
     try {
       const response = await axiosInstance.get('/user/logout');
-      console.log(response);
+      // console.log(response);
       setUser(null);
       navigate('/');
     } catch (error) {

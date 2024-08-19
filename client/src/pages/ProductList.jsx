@@ -42,7 +42,7 @@ const ProductList = () => {
       {/* <ProductListShow products={products} /> */}
       <div className="flex flex-wrap justify-center items-center bg-gray-100 min-h-screen">
       {products.map((item, index) => {
-        console.log(item);
+        // console.log(item);
         return (
           <ProductCard
             key={index}

@@ -15,20 +15,20 @@ export default function useOnScreen(
     let cancel;
 
     useEffect(() => {
-        console.log("in hook",query);
+        // console.log("in hook",query);
         const fetchData = async () => {
             setLoading(true);
             setError(false);
             try {
-                console.log(
-                    `/product?slug=${query.slug}&order=${query.order}&sort=${query.sort}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}&page=${query.page}&limit=${query.limit}`
-                );
+                // console.log(
+                //     `/product?slug=${query.slug}&order=${query.order}&sort=${query.sort}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}&page=${query.page}&limit=${query.limit}`
+                // );
                 const res = await axiosInstance.get(
                     `/product?slug=${query.slug}&order=${query.order}&sort=${query.sort}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}&page=${query.page}&limit=${query.limit}`,
                     { cancelToken: new axios.CancelToken((c) => (cancel = c)) }
                 );
                 // console.log('useeffect ke nadar');
-                console.log(res.data.result);
+                // console.log(res.data.result);
                 setProducts((prevProducts) => {
                     if (hasPropsChanged) {
                       setHasPropsChanged(false)
@@ -39,7 +39,7 @@ export default function useOnScreen(
                         ];
                     }
                 });
-                console.log(products);
+                // console.log(products);
                 setHasMore(res.data.result.length > 0);
                 setLoading(false);
             } catch (e) {
